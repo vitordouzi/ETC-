@@ -10,9 +10,10 @@ try:
 except:
     import nltk
     nltk.download('stopwords')
-    nltk_stopwords = set(stopwords_by_lang.words('english'))
-    skl_stopwords  = set(stop_words)
-    from nltk.corpus import stopwords as stopwords_by_lang
+    
+from nltk.corpus import stopwords as stopwords_by_lang
+nltk_stopwords = set(stopwords_by_lang.words('english'))
+skl_stopwords  = set(stop_words)
 
 class ETCTokenizer(BaseEstimator, TransformerMixin):
     def __init__(self, with_CLS=False, **kargs):
