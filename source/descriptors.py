@@ -110,6 +110,9 @@ base_ETC = {
                     }
                 }
 }
+copied = deepcopy(base_ETC)
+copied['init_params']['tname'] += 'zero'
+DESC_CLS['etc-zero'] = copied
 
 copied = deepcopy(base_ETC)
 copied['init_params']['tname'] += 'base'
