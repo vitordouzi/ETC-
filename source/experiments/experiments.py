@@ -6,7 +6,7 @@ from ..utils.dataset import Dataset
 class Experiment(object):
     def __init__(self, dst_descs, trnr_descs, output_path='~/.etc/', force:list=None, seed=42):
         super(Experiment, self).__init__()
-        self.datasets = [ Dataset(**desc) for desc in dst_descs ]
+        self.datasets = [ Dataset(**desc, dpath=output_path) for desc in dst_descs ]
         self.trnr = [ from_descriptor(desc) for desc in trnr_descs ]
         self.N = len(self.datasets)*len(self.trnr)
         self.force = force
