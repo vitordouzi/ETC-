@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import numpy as np
 
 class SimMatrix(nn.Module):
     def __init__(self, eps=1e-8):
