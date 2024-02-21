@@ -1,2 +1,2 @@
-from source.experiments import *
-from source.descriptors import *
+from .source.experiments import *
+from .source.descriptors import *
