@@ -125,6 +125,11 @@ copied['init_params']['descriptor']['update_drop'] = True
 DESC_CLS['etc-base'] = copied
 
 copied = deepcopy(base_ETC)
+copied['init_params']['tname'] += 'unigram'
+copied['init_params']['descriptor']['tknz']['ngram_range'] = (1,1)
+DESC_CLS['etc-unigram'] = copied
+
+copied = deepcopy(base_ETC)
 copied['init_params']['tname'] += 'drop'
 copied['init_params']['descriptor']['update_drop'] = True
 DESC_CLS['etc-drop'] = copied

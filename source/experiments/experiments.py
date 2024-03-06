@@ -21,7 +21,7 @@ class Experiment(object):
     def run(self):
         for dst in tqdm(self.datasets, desc=f"Dataset...", position=5):
             for trnr in tqdm(self.trnr, desc=f"Method...", position=4):
-                for fold in tqdm(dst,   desc=f"Method...", position=3, total=dst.n):
+                for fold in tqdm(dst, desc=f"Fold...", position=3, total=dst.n):
                     seed_everything(self.seed)
                     foutput_path = path.join(self.output_path, dst.dname, trnr.tname, f"fold-{fold.foldname}", str(fold.fold_idx))
                     trnr.run( fold, foutput_path, force = self.force )

@@ -87,8 +87,7 @@ class Dataset(object):
         self.nclass = len(set(self.y))
         self.N      = len(self.y)
         self.splits = dict()
-        if self.nfold is not None:
-            self.n = len( self.get_split(self.nfold) )
+        self.n = len( self.get_split(self.nfold) )
 
             
     def load_split(self, foldname):

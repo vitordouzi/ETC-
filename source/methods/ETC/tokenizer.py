@@ -10,6 +10,7 @@ try:
 except:
     import nltk
     nltk.download('stopwords')
+    from nltk.corpus import stopwords as stopwords_by_lang
     
 from nltk.corpus import stopwords as stopwords_by_lang
 nltk_stopwords = set(stopwords_by_lang.words('english'))
