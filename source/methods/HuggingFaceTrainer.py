@@ -12,6 +12,7 @@ from torch.utils.data import DataLoader
 import os
 from tqdm.auto import tqdm
 import shutil
+from ..utils.base import seed_everything
 
 f1_metric = evaluate.load("f1")
 def compute_metrics(eval_pred):
@@ -27,16 +28,18 @@ class HuggingFaceTrainer(Trainect):
         self.max_length = descriptor['max_length']
         self.epochs     = descriptor['epochs']
         self.learning_rate = descriptor['learning_rate']
+        self.shuffle_tokens = descriptor['shuffle_tokens'] if "shuffle_tokens" in descriptor else False
         self.device = descriptor['device'] if "device" in descriptor else ("cuda:0" if torch.cuda.is_available() else 'cpu')
     
     def init_model(self, fold, output_dir: str = None):
-        
+        seed_everything(42)
         print('initing model...')
         model = AutoModelForSequenceClassification.from_pretrained(self.model_name, num_labels=fold.nclass, max_length=self.max_length).to(self.device)
         print('initing tknz...')
         tokenizer = AutoTokenizer.from_pretrained(self.model_name, padding=True, truncation=True, max_length=self.max_length)
         print('initing dataset...')
         fold = fold.to('hugging', tokenizer=tokenizer)
+        fold.random_pos = self.shuffle_tokens
         self.training_args = TrainingArguments(
             output_dir=output_dir,
             num_train_epochs=self.epochs,
@@ -73,7 +76,7 @@ class HuggingFaceTrainer(Trainect):
         
     def predict(self, model, X):
         (model, tokenizer, trainer) = model
-        test_dataset = HugDataset(X, [0] * len(X), tokenizer, self.max_length)
+        test_dataset = HugDataset(X, tokenizer, self.max_length)
         test_loader = DataLoader(test_dataset, batch_size=self.batch_size)
 
         predictions = []

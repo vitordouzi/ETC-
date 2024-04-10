@@ -147,10 +147,10 @@ class HugDataset(data.Dataset):
         self.y = y
         self.tokenizer = tokenizer
         self.max_length = max_length
+        self.random_pos = False
 
     def __getitem__(self, idx):
         text = str(self.X[idx])
-        label = self.y[idx]
 
         encoding = self.tokenizer.encode_plus(
             text,
@@ -162,12 +162,32 @@ class HugDataset(data.Dataset):
             return_attention_mask=True,
             return_tensors='pt',
         )
+        if self.random_pos:
+            encoding['input_ids'] = self.shuffle_tokens(encoding['input_ids'])
 
-        return {
+        result = {
             'input_ids': encoding['input_ids'].flatten(),
-            'attention_mask': encoding['attention_mask'].flatten(),
-            'labels': torch.tensor(label, dtype=torch.long)
+            'attention_mask': encoding['attention_mask'].flatten()
         }
+        if self.y is not None:
+            result['labels'] = torch.tensor(self.y[idx], dtype=torch.long)
 
+        return result
+    def shuffle_tokens(self, tensor):
+        # Create a mask for non-zero elements
+        tensor = tensor.squeeze()
+        non_zero_mask = (tensor != 0)
+
+        # Get the indices of non-zero elements
+        non_zero_indices = torch.arange(tensor.size(0))[non_zero_mask]
+
+        # Shuffle the indices of non-zero elements
+        shuffled_non_zero_indices = torch.randperm(non_zero_indices.size(0))
+
+        # Reorder the non-zero elements using the shuffled indices
+        shuffled_tensor = torch.zeros_like(tensor)
+        shuffled_tensor[non_zero_indices] = tensor[non_zero_indices][shuffled_non_zero_indices]
+        return shuffled_tensor.unsqueeze(0)
+    
     def __len__(self):
         return len(self.X)

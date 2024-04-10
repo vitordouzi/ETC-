@@ -55,6 +55,12 @@ copied['init_params']['descriptor']['model_name'] = 'bert-base-uncased'
 DESC_CLS['bert'] = copied
 
 copied = deepcopy(base_HF)
+copied['init_params']['tname'] += 'bert-shuffled'
+copied['init_params']['descriptor']['model_name'] = 'bert-base-uncased'
+copied['init_params']['descriptor']['shuffle_tokens'] = True
+DESC_CLS['bert-shuffled'] = copied
+
+copied = deepcopy(base_HF)
 copied['init_params']['tname'] += 'albert'
 copied['init_params']['descriptor']['model_name'] = 'albert-base-v2'
 DESC_CLS['albert'] = copied
