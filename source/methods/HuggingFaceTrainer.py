@@ -76,7 +76,7 @@ class HuggingFaceTrainer(Trainect):
         
     def predict(self, model, X):
         (model, tokenizer, trainer) = model
-        test_dataset = HugDataset(X, tokenizer, self.max_length)
+        test_dataset = HugDataset(X, tokenizer=tokenizer, max_length=self.max_length)
         test_loader = DataLoader(test_dataset, batch_size=self.batch_size)
 
         predictions = []
