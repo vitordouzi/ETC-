@@ -9,7 +9,7 @@ from sklearn.metrics import f1_score
 from tqdm.auto import tqdm
 import copy
 from .etcembedding import ETCEmbedding
-from .utils import seed_everything
+from .utils import seed_everything, removeNaN
 from .tokenizer import DominanceTokenizer
 
 class SimMatrix(nn.Module):

@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class ETCEmbedding(nn.Module):
     def __init__(self, vocab_size, hiddens, drop, att_model='aa'):

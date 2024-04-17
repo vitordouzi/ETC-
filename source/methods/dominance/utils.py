@@ -10,3 +10,9 @@ def seed_everything(seed: int):
     torch.cuda.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
+
+import torch
+def removeNaN(data):
+    zeros   = torch.zeros_like(data)
+    isnan   = torch.isnan(data)
+    return torch.where(isnan, zeros, data)
