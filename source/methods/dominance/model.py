@@ -8,9 +8,9 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from sklearn.metrics import f1_score
 from tqdm.auto import tqdm
 import copy
-from etcembedding import ETCEmbedding
-from utils import seed_everything
-from tokenizer import DominanceTokenizer
+from .etcembedding import ETCEmbedding
+from .utils import seed_everything
+from .tokenizer import DominanceTokenizer
 
 class SimMatrix(nn.Module):
     def __init__(self, eps=1e-8):

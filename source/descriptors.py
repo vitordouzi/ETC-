@@ -172,7 +172,7 @@ DESC_CLS['etc-fl'] = copied
 
 
 base_dominance =  {
-    'classpath': 'source.methods.ETCTrainer.ETCTrainer',
+    'classpath': 'source.methods.dominance.ETCTrainer.ETCTrainer',
     'init_params': { 'tname': 'DETC-',
                      'descriptor': { 
                         'tknz':  { 
