@@ -32,13 +32,26 @@ class DominanceTokenizer():
         self.lbin = LabelBinarizer(sparse_output=True)
         self.norm = norm
     def fit(self, X, y):
-        X_data = self.vect.fit_transform(tqdm(X, total=len(y)))
+        data = self.vect.fit_transform(tqdm(X, total=len(y)))
+        self.N,self.V = data.shape
+        
         Y      = self.lbin.fit_transform(y)
-        self.dominance = (X_data.T @ Y)
+        self.dominance = (data.T @ Y)
+        self.max_doc_len = int(np.percentile(np.array(data.sum(axis=1))[:,0], 90))
+        self.df_ = np.array(data.sum(axis=0))[0,:]
         return self
-    def transform(self, X):
-        return self.vect.transform(X)
     
+    def transform(self, X):
+        rows,cols = [],[]
+        for i,doc in enumerate(self.vect.transform(X)):
+            terms = doc.nonzero()[1]
+            if len(terms) > self.max_doc_len:
+                idf_ts = self.df_[terms]
+                _,terms = zip(*sorted( zip(idf_ts, terms)))
+                terms = list(terms)[:self.max_doc_len]
+            cols.extend( terms )
+            rows.extend( [ i for _ in terms ] )
+        return csr_matrix((np.ones_like(rows),(rows, cols)), shape=(i+1, self.V))    
     def collate(self, X):
         data      = self.transform(X)
         
@@ -76,4 +89,3 @@ class DominanceTokenizer():
         dom_batch = pad_sequence(list(dom_batch), batch_first=True, padding_value=0.)*1.
         
         return { 'input_ids': tkns_btch, 'dom': dom_batch, 'labels': torch.LongTensor(y) }
-    
