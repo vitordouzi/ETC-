@@ -221,23 +221,37 @@ copied['init_params']['descriptor']['model']['alpha'] = .85
 DESC_CLS['detc-r85p'] = copied
 
 copied = deepcopy(base_dominance)
-copied['init_params']['tname'] += 'left-85p'
-copied['init_params']['descriptor']['model']['form'] = 'left'
-copied['init_params']['descriptor']['model']['alpha'] = .85
-DESC_CLS['detc-l85p'] = copied
+copied['init_params']['tname'] += 'right-50p'
+copied['init_params']['descriptor']['model']['form'] = 'right'
+copied['init_params']['descriptor']['model']['alpha'] = .5
+DESC_CLS['detc-r50p'] = copied
+
+copied = deepcopy(base_dominance)
+copied['init_params']['tname'] += 'right-n50p'
+copied['init_params']['descriptor']['model']['form'] = 'right'
+copied['init_params']['descriptor']['model']['alpha'] = .5
+copied['init_params']['descriptor']['tknz']['nrom'] = False
+DESC_CLS['detc-nr50p'] = copied
+###########################################################################################################################
+copied = deepcopy(base_dominance)
+copied['init_params']['tname'] += 'tranp-50p'
+copied['init_params']['descriptor']['model']['form'] = None
+copied['init_params']['descriptor']['model']['alpha'] = .5
+DESC_CLS['detc-t50p'] = copied
 
 copied = deepcopy(base_dominance)
 copied['init_params']['tname'] += 'tranp-85p'
 copied['init_params']['descriptor']['model']['form'] = None
 copied['init_params']['descriptor']['model']['alpha'] = .85
 DESC_CLS['detc-t85p'] = copied
-###########################################################################################################################
-copied = deepcopy(base_dominance)
-copied['init_params']['tname'] += 'right-50p'
-copied['init_params']['descriptor']['model']['form'] = 'right'
-copied['init_params']['descriptor']['model']['alpha'] = .5
-DESC_CLS['detc-r50p'] = copied
 
+copied = deepcopy(base_dominance)
+copied['init_params']['tname'] += 'tranp-n85p'
+copied['init_params']['descriptor']['model']['form'] = None
+copied['init_params']['descriptor']['model']['alpha'] = .85
+copied['init_params']['descriptor']['tknz']['nrom'] = False
+DESC_CLS['detc-nt85p'] = copied
+###########################################################################################################################
 copied = deepcopy(base_dominance)
 copied['init_params']['tname'] += 'left-50p'
 copied['init_params']['descriptor']['model']['form'] = 'left'
@@ -245,8 +259,7 @@ copied['init_params']['descriptor']['model']['alpha'] = .5
 DESC_CLS['detc-l50p'] = copied
 
 copied = deepcopy(base_dominance)
-copied['init_params']['tname'] += 'tranp-50p'
-copied['init_params']['descriptor']['model']['form'] = None
-copied['init_params']['descriptor']['model']['alpha'] = .5
-DESC_CLS['detc-t50p'] = copied
-
+copied['init_params']['tname'] += 'left-85p'
+copied['init_params']['descriptor']['model']['form'] = 'left'
+copied['init_params']['descriptor']['model']['alpha'] = .85
+DESC_CLS['detc-l85p'] = copied
