@@ -15,6 +15,12 @@ DESC_DST = {
     'patents': {  "nfold": 10, "dname": "patents" },
     'arxiv': {  "nfold": 10, "dname": "arxiv" },
 
+    'mpqa': { "nfold": 10, "dname": "mpqa" },
+    'mr': { "nfold": 10, "dname": "mr" } ,
+    'pang_movie': { "nfold": 10, "dname": "pang_movie_2L" },
+    'vader_amazon': {  "nfold": 10, "dname": "vader_amazon_2L" },
+    'spam': {  "nfold": 10, "dname": "spam" },
+
     'ohsumed': {  "nfold": 10, "dname": "ohsumed" },
     'wos11967': { "nfold":10, "dname": "wos11967" },
     'yelp_reviews': { "nfold": 10, "dname": "yelp_review_2L" },
