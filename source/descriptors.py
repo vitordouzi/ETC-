@@ -176,7 +176,34 @@ copied['init_params']['tname'] += ''
 copied['init_params']['descriptor']['model']['gamma'] = 5.
 DESC_CLS['etc-fl'] = copied
 
+###########################################################################################################
+DESC_CLS['etc-ft'] = {
+    'classpath': 'source.methods.FastText.ETCFastTextTrainer.ETCFTTrainer',
+    'init_params': { 'tname': 'FTETC',
+                     'descriptor': { 
+                        'tknz':  { 
+                            'model': '~/.etc/models/fasttext/w4.model',
+                            'vocab_size': 2**20,
+                            'min_df': 2,
+                            'max_doc_size': 2**10
+                        },
+                        'model': {
+                            'ndim_in': 300,
+                            'ndim_out': 300,
+                            'nheads': 12,
+                            'p': .3
+                        },
+                        'nepochs': 100,
+                        'lr': 5e-3,
+                        'batch_size': 16,
+                        'update_drop': False,
+                        'device': 'cuda'
+                    }
+        }
+}
 
+
+###########################################################################################################
 base_dominance =  {
     'classpath': 'source.methods.dominance.ETCTrainer.ETCTrainer',
     'init_params': { 'tname': 'DETC-',
