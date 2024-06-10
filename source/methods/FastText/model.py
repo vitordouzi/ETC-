@@ -91,7 +91,7 @@ class ETCAttention(nn.Module):
         nco_weights = self.norm(nco_weights)
         return nco_weights.transpose(-1,-2).view(B,H,L,L)
     
-    def forward(self, hiddens):
+    def forward(self, hiddens, mask2d):
         B,L,D = hiddens.shape
         hiddens = hiddens.reshape(B,L,3,D//3)
         
@@ -100,7 +100,7 @@ class ETCAttention(nn.Module):
         
         att = self.sim_fn(K, Q)               # Q:[B,H,L,D//H] K:[B,H,L,D//H] -> [B,H,L,L]
         att = self.lnormalize(att)            # att:[B,H,L,L] -> [B,H,L,L]
-        #att[mask2d] = 0                       # att:[B,H,L,L] mask:[B,H,L,L] -> [B,H,L,L] (Avg on z-norm to pad)
+        #att[mask2d] = 0                       # att:[B,H,L,L] mask:[B,H,L,L] -> [B,H,L,L] (Avg on z-norm)
         att = torch.softmax(att, dim=-1)
         att = removeNaN(att)
         
@@ -108,6 +108,7 @@ class ETCAttention(nn.Module):
         V = self.catHiddens(att @ V)          # att:[B,H,L,L] V:[B,H,L,D//H] -> [B,L,D]
         
         return self.lin_out(self.drop(V)), att
+
 class ETCModel(nn.Module):
     def __init__(self, ndim_in, ndim_out, nheads, vocab_size, nclass, p=.3):
         super(ETCModel, self).__init__()
@@ -136,11 +137,13 @@ class ETCModel(nn.Module):
     
     def forward(self, input_ids, wv, labels=None):
         masks  = input_ids != 0  # [B,L]
+        mask2d = masks.unsqueeze(1).logical_and(masks.unsqueeze(2)).unsqueeze(1) # B,1,L,L
+        mask2d = mask2d.repeat(1,self.H,1,1).logical_not()
         
-        probs_t, att_t = self.attT(self.lin_inT(input_ids))
+        probs_t, att_t = self.attT(self.lin_inT(input_ids), mask2d)
         probs_t = (self.getWeights(att_t, masks) * probs_t).sum(dim=1)
         
-        probs_h, att_h = self.attH(self.lin_inH(wv))
+        probs_h, att_h = self.attH(self.lin_inH(wv), mask2d)
         probs_h = (self.getWeights(att_h, masks) * probs_h).sum(dim=1)
         
         probs = (probs_t+probs_h)/2.
